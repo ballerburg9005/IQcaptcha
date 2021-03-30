@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>IQcaptcha demo</title>
+    <script src="http://captcha.us.to/repo/api.js" async defer></script>
+    <script>
+	function hide(whichclass)
+	{
+		for(div of document.getElementsByClassName(whichclass))
+			div.style.display = "none";
+	}	
+    </script>
+<style>
+.formelement {
+margin: 4px;
+}
+</style>
+  </head>
+  <body>
+<img class="content" src="http://www.randalolson.com/wp-content/uploads/iq-by-college-major-gender.png" onclick="this.style.display = 'none';">
+    <form action="" method="POST" onsubmit='var bev = document.getElementById("backend_validation"); bev.src = "verify.php?session="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); event.preventDefault();'>
+<div style="display: inline-block">  </div>
+<hr>
+<div class="content formelement">LEAVE A REPLY</div>
+<div class="content formelement"><input type="text" placeholder="Your Name"></div>
+<div class="content formelement"><input type="text" placeholder="Your Email"></div>
+<div class="content formelement"><textarea rows="4" cols="50"></textarea></div>
+<div style="margin: 4px;" class="iq-captcha-element" data-sitekey="b35074286103ba87e759d081640433b4" data-wrongmax="6" data-wrongtimeout="6"></div>
+<div class="content formelement"><input type="submit" value="Submit">
+<button class="content formelement" type="button" onclick="hide('formelement'); return false;">HIDE FORM</button>
+</div>
+    </form>
+<div class="content formelement">
+	<h3 style="margin-bottom: 2px">Backend validation:</h3>
+	<iframe name="output_frame" src="" id="backend_validation" width="1200" height="48">
+	</iframe>  
+</div>
+  </body>
+</html>
