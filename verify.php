@@ -1,6 +1,6 @@
 <?php
 // TODO: force users into sessions. Currently, the client can open a maximum of 50 sessions (limit via IP address) 
-// 		and present any one of them as valid to the server, as long as it has been solved correctly plus the 
+// 		and present any one of them as valid to the server, as long as it has been success correctly plus the 
 //		server can distinguish which parameters were used. If the site provides a userid + sitekey, then each 
 //		user can be limited to 1 session only.
 // TODO: sessions don't seem to disappear after 2 hours? How long really?
@@ -26,10 +26,10 @@ header('Content-Type: application/json');
 
 ini_set("session.use_cookies", 0);
 
-session_id(substr(preg_replace('/[[:^print:]]/', '', $_POST['session']??$_GET['session']??""), 0, 1024));
+$gcompat = ($_POST['response']??$_GET['response']??"") === "" ? "session" : "response";
+session_id(substr(preg_replace('/[[:^print:]]/', '', $_POST[$gcompat]??$_GET[$gcompat]??""), 0, 1024));
 session_start();
-
-if($_POST['frontend']??"" == "true")
+if(($_POST['frontend']??"") == "true")
 {
 	sleep(1);
 
@@ -52,7 +52,7 @@ if($_POST['frontend']??"" == "true")
 		switch($_POST['action'])
 		{
 		case "create_session":
-			if($_SESSION['v']['solved']??false)
+			if($_SESSION['v']['success']??false)
 			{
 				$response['error'] = "";
 				$response['validated'] = true;
@@ -74,16 +74,17 @@ if($_POST['frontend']??"" == "true")
 				$response['session'] = session_id();
 				$response['error'] = "";
 				$_SESSION['v'] = [ 
-					'solved' => false,
+					'success' => false,
 					'sitekey' =>  $_POST['data-sitekey']??"",
+					'hostname' =>  $_POST['hostname']??"",
 					'stock_parameters' => isset($_POST['data-wrongmax'], $_POST['data-wrongtimeout']) ? false : true,
 					'wrongmax' => max(3, min(10, $_POST['data-wrongmax']??0)),
 					'wrongtimeout' => 60 * max(3, min(1000, $_POST['data-wrongtimeout']??0)),
+					'challenge_ts' => $IP_TIME,
 						];
 				$_SESSION['w'] = [ 
 					'wrongcounter' => $_SESSION['w']['wrongcounter'] ?? 1,
 					'lasttime' => 0,
-					'iptime' => $IP_TIME,
 					'answer' => strval($modified_answer['answer']),
 						];
 				$IP_ADDR = "add";
@@ -96,10 +97,10 @@ if($_POST['frontend']??"" == "true")
 				{
 					$response['error'] = "";
 					$response['validated'] = true;
-					$_SESSION['v']['solved'] = true;
+					$_SESSION['v']['success'] = true;
 					$_SESSION['w']['wrongcounter'] = 0;
 					$IP_ADDR = "remove";
-					$IP_TIME = $_SESSION['w']['iptime'];
+					$IP_TIME = $_SESSION['v']['challenge_ts'];
 				}
 				else 
 				{
@@ -117,15 +118,22 @@ if($_POST['frontend']??"" == "true")
 		}
 	}
 }
-else
+else	// backend
 {
 	$response = ['error' => "No valid session provided."];	
-	if(isset($_GET['session'])) $VAL = $_GET; 
-	else if(isset($_POST['session'])) $VAL = $_POST; 
+	if(isset($_GET['response'])) $VAL = $_GET; 
+	else if(isset($_POST['response'])) $VAL = $_POST; 
 
 	if(isset($VAL))
 	{
 		if(isset($_SESSION['v'])) $response = $_SESSION['v'];
+	
+		if(isset($VAL['secret']) && $VAL['secret'] !== $_SESSION['v']['sitekey'])
+			$response = ['error' => "Secret mismatches sitekey provided by client.",
+					'success' => false,
+					'challenge_ts' => $_SESSION['v']['challenge_ts'],
+					'hostname' => $_SESSION['v']['hostname'],
+					];
 	}
 }
 
@@ -135,8 +143,8 @@ session_write_close();
 session_id("da4a6221426c1e5ee5a51f90a46ffd5b");
 session_start();
 if(!isset($_SESSION[$_SERVER['REMOTE_ADDR']])) $_SESSION[$_SERVER['REMOTE_ADDR']] = [];
-if($IP_ADDR??"" == "add") $_SESSION[$_SERVER['REMOTE_ADDR']] += [$IP_TIME];
-if($IP_ADDR??"" == "remove") unset($_SESSION[$_SERVER['REMOTE_ADDR']][array_search($IP_TIME, $_SESSION[$_SERVER['REMOTE_ADDR']])]);
+if(($IP_ADDR??"") == "add") $_SESSION[$_SERVER['REMOTE_ADDR']] += [$IP_TIME];
+if(($IP_ADDR??"") == "remove") unset($_SESSION[$_SERVER['REMOTE_ADDR']][array_search($IP_TIME, $_SESSION[$_SERVER['REMOTE_ADDR']])]);
 foreach($_SESSION[$_SERVER['REMOTE_ADDR']] as $k => $v) if($v+$IP_MAXTRANSIENCE > time()) unset($_SESSION[$_SERVER['REMOTE_ADDR']][$k]);
 $toomanyips = count($_SESSION[$_SERVER['REMOTE_ADDR']]) > $IP_MAXUSERS ? true : false;
 session_write_close();
@@ -146,7 +154,7 @@ session_start();
 if($toomanyips)
 { 
 	$response = ['error' => "Too many requests per IP address!", 'aborted' => true]; 
-	if(isset($_SESSION['v']['solved'])) $_SESSION['v']['solved'] = false;
+	if(isset($_SESSION['v']['success'])) $_SESSION['v']['success'] = false;
 }
 /* END anti brute force */
 
