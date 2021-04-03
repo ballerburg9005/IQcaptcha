@@ -1,4 +1,7 @@
-
+/*------------------------------------------------------------------------------
+* Copyright (C) 2021 Ballerburg9005 (https://github.com/ballerburg9005)
+* Distributable under the terms of the GNU General Public License v3.0
+------------------------------------------------------------------------------*/
 
 var iqcaptcha_scripts = [];
 for(s of document.querySelectorAll("script")) if(s.src.length > 6) iqcaptcha_scripts.push(s);
