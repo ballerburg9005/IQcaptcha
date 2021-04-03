@@ -1,8 +1,8 @@
 <?php
-/*------------------------------------------------------------------------------
-* Copyright (C) 2021 Ballerburg9005 (https://github.com/ballerburg9005)
-* Distributable under the terms of the GNU General Public License v3.0
-*/
+/**
+ * @copyright Ballerburg9005 <https://github.com/ballerburg9005>
+ * @license GNU General Public License, version 2 (GPL-3.0)
+**/
 
 // TODO: force users into sessions. Currently, the client can open a maximum of 50 sessions (limit via IP address) 
 // 		and present any one of them as valid to the server, as long as it has been success correctly plus the 
