@@ -3,14 +3,12 @@
  * @license GNU General Public License, version 2 (GPL-3.0)
 **/
 
-
-var iqcaptcha_scripts = [];
-for(s of document.querySelectorAll("script")) if(s.src.length > 6) iqcaptcha_scripts.push(s);
-const iqcaptcha_urlurl = new URL(iqcaptcha_scripts[iqcaptcha_scripts.length - 1].src);
+const iqcaptcha_urlurl = new URL(document.currentScript.src);
 const iqcaptcha_urlparms = new URLSearchParams(iqcaptcha_urlurl).search;
 let iqcaptcha_url = iqcaptcha_urlurl.href.split('?')[0];
 iqcaptcha_url = iqcaptcha_url.slice(0,iqcaptcha_url.lastIndexOf("/")+1);
 
+console.dir(document.currentScript);
 
 function createClasses(classes){
 	var style = document.createElement('style');
