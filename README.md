@@ -88,8 +88,8 @@ The return data will be in JSON:
   "hostname": string,                    // whatever the client specified (currently unused)
 
   // these keys can also be specified by the client
-  "wrongmax": int(3-10),                // how often the client can fail the challenge
-  "wrongtimeout": int(3-1000),            // how long client will be timed out in minutes, after failing wrongmax times
+  "wrongmax": int(3-10),                 // how often the client can fail the challenge
+  "wrongtimeout": int(3-1000),           // how long client will be timed out in minutes, after failing wrongmax times
   "sitekey": string,                     // the sitekey / secret used by the client
 }
 ```
