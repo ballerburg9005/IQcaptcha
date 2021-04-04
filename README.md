@@ -57,10 +57,15 @@ Any of the following classes can be used: iq-captcha-element, g-iqcaptcha, g-rec
 
 You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display).
 
-If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefex them with "data-" in the div tag. For example:
-```
-<div class="iq-captcha-element" data-sitekey="mytest.com-guestbook-asklfhsrandomdjfskfh" data-wrongmax="5" data-wrongtimeout="999"></div>
-```
+
+If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefex them with "data-" in the div tag. 
+
+<details>
+  <summary> For example:</summary>
+   ```
+   <div class="iq-captcha-element" data-sitekey="mytest.com-guestbook-asklfhsrandomdjfskfh" data-wrongmax="5" data-wrongtimeout="999"></div>
+   ```
+</details>
 
 Backend Usage
 ----------------------------------------------------------------
