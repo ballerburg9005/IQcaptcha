@@ -28,6 +28,18 @@ Installation
 Put files onto webserver.
 Run composer install.
 
+Principle of Operation
+----------------------------------------------------------------
+To validate on the client side, api.js queries verify.php via XHR. Verify.php creates a PHP session and stores the state of verification in it. To validate on the backend, the server has to query verify.php with the session ID via http request. 
+
+Although IQcaptcha accepts public and secret API keys, those **API keys are not required** and only named such for compatibility reasons. Instead they can be used as a site/application specific token (e.g. test.com-myforum-VZCck432random5jk372).
+
+Verify.php will only validate wheter or not the client sitekey matches the backend parameter "secret" if provided, and if the session is valid. Please check in your backend if all the data-... parameters (wrongmax, sitekey, userid, etc.) you provided do actually match your client-side provided parameters.
+
+Anyone is free to create arbitrary sessions with arbitrary parameters and also to read any sessions if the session key is known. This is not a potential security issue, no sensitive data is stored. But it does allow attackers to create a surplus of requests, until IP-based limits are reached. 
+
+To solve this problem, you can provide "userid". (not implemented yet)
+
 Usage
 ----------------------------------------------------------------
 
