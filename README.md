@@ -61,7 +61,8 @@ You can also use what is known with reCAPTCHA as [explicit rendering](https://de
 If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefex them with "data-" in the div tag. 
 
 <details>
-  <summary> For example:</summary>
+  <summary>For example:</summary>
+  
    ```
    <div class="iq-captcha-element" data-sitekey="mytest.com-guestbook-asklfhsrandomdjfskfh" data-wrongmax="5" data-wrongtimeout="999"></div>
    ```
