@@ -91,7 +91,7 @@ The return data will be in JSON:
 
   // these keys can also be specified by the client
   "wrongmax": int(3-10),                 // how often the client can fail the challenge
-  "wrongtimeout": int(3-1000),           // how long client will be timed out in minutes, after failing wrongmax times
+  "wrongtimeout": int(180-60000),        // how long client will be timed out in seconds, after failing wrongmax times
   "sitekey": string,                     // the sitekey / secret used by the client
 }
 ```
@@ -101,7 +101,9 @@ Please check in your backend if all parameters you used do actually match the re
 <details>
   <summary>Backend Code Example</summary>
 
-This code is part of [the demo](demo/)
+
+This code is part of [the demo](demo/).
+
 ```
 <?php
 $mywrongmax = 6;
