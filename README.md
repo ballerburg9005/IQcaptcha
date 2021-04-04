@@ -159,7 +159,7 @@ function iqcaptcha_verify($data)
 
 ## License
 
- Copyright (C) 2021 Ballerburg9005
+ Copyright (C) 01.04.2021 Ballerburg9005
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
