@@ -21,7 +21,14 @@ $IP_TIME = time();
 if(!$PRODUCTION) error_reporting(E_ALL);
 
 require("solutions.php");
-require_once __DIR__ . '/vendor/autoload.php';
+
+if(file_exists(__DIR__ . '/vendor/autoload.php'))
+	require_once(__DIR__ . '/vendor/autoload.php');
+else
+{
+	header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
+	die("Please run `composer install` in the IQcaptcha directory.");
+}
 
 $response = ['error' => "Unknown Error.", 'aborted' => false ];
 

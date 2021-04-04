@@ -8,7 +8,8 @@ const iqcaptcha_urlparms = new URLSearchParams(iqcaptcha_urlurl).search;
 let iqcaptcha_url = iqcaptcha_urlurl.href.split('?')[0];
 iqcaptcha_url = iqcaptcha_url.slice(0,iqcaptcha_url.lastIndexOf("/")+1);
 
-console.dir(document.currentScript);
+console.dir(iqcaptcha_url);
+
 
 function createClasses(classes){
 	var style = document.createElement('style');
