@@ -58,7 +58,7 @@ Any of the following classes can be used: iq-captcha-element, g-iqcaptcha, g-rec
 You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display).
 
 
-If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefex them with "data-" in the div tag. 
+If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefix them with "data-" as new div tags. 
 
 <details>
   <summary>For example:</summary>
