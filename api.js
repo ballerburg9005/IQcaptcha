@@ -363,7 +363,7 @@ function iq_captcha_verify(data)
 			const verify_button = document.querySelector(".iq-captcha-verify-button");
 			if(verify_button) verify_button.disabled = false;
 
-			} else iq_captcha_verify_xhr_error("server error: "+xhr.status, checkbox);
+			} else iq_captcha_verify_xhr_error("server error: ", xhr.status.toString(), checkbox);
 
 			var countdown = document.querySelector(".iq-captcha-countdown");
 
@@ -377,10 +377,10 @@ function iq_captcha_verify(data)
 
             };
 	    xhr.onerror = function () { 
-		iq_captcha_verify_xhr_error("IQcaptcha backend unreachable", checkbox);
+		iq_captcha_verify_xhr_error("IQcaptcha backend unreachable", "", checkbox);
 	    };
 	    xhr.ontimeout = function () { 
-		iq_captcha_verify_xhr_error("server timeout", checkbox);
+		iq_captcha_verify_xhr_error("server timeout", "", checkbox);
 	    };
 
 	data['frontend'] = "true";
@@ -390,9 +390,10 @@ function iq_captcha_verify(data)
 }
 
 
-function iq_captcha_verify_xhr_error(error, checkbox)
+function iq_captcha_verify_xhr_error(error, code, checkbox)
 {
-	iq_captcha_verify_show_error(error);
+	if(code === "580") code = "Please run `composer install` in the IQcaptcha directory.";
+	iq_captcha_verify_show_error(error+code);
 	checkbox.innerHTML = "E";
 	checkbox.style["background-color"] = "#fcc";
 	checkbox.style["pointer-events"] = "auto";
