@@ -134,14 +134,15 @@ if(($_POST['frontend']??"") == "true")
 else	// backend
 {
 	$response = ['error' => "No valid session provided."];	
-	if(isset($_GET['response'])) $VAL = $_GET; 
-	else if(isset($_POST['response'])) $VAL = $_POST; 
+	if(isset($_GET['response']) || isset($_GET['session'])) $VAL = $_GET; 
+	else if(isset($_POST['response']) || isset($_POST['session'])) $VAL = $_POST; 
 
 	if(isset($VAL))
 	{
 		if(isset($_SESSION['v'])) $response = $_SESSION['v'];
 	
-		if(isset($VAL['secret']) && $VAL['secret'] !== $_SESSION['v']['sitekey'])
+		if((isset($VAL['secret']) && $VAL['secret'] !== $_SESSION['v']['sitekey'])
+		|| (isset($VAL['sitekey']) && $VAL['sitekey'] !== $_SESSION['v']['sitekey']))
 			$response = ['error' => "Secret mismatches sitekey provided by client.",
 					'success' => false,
 					'challenge_ts' => $_SESSION['v']['challenge_ts'],
