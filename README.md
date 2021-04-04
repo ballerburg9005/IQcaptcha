@@ -6,8 +6,8 @@
 
 <p align=center>
   <strong><a href="http://iqcaptcha.us.to/">Website</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/repo/demo/">Demo</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/Forum">Forum</a></strong>
+  | <strong><a href="http://iqcaptcha.us.to/repo/demo/demo.html">Demo</a></strong>
+  | <strong><a href="http://iqcaptcha.us.to/forum">Forum</a></strong>
 </p>
 
 <p align="center">
