@@ -46,7 +46,8 @@ Client Side Usage
 ----------------------------------------------------------------
 1. Load the script in the head:
 ```
-<script src='http://iqcaptcha.us.to/repo/api.js' async defer></script> <!--- please use your own URL not iqcaptcha.us.to --->
+<script src='http://iqcaptcha.us.to/repo/api.js' async defer></script> 
+<!--- please use your own URL not iqcaptcha.us.to --->
 ```
 
 2. Putting this tag into your form:
@@ -75,7 +76,8 @@ Any of the following form fields will contain the correct client session id: iq-
 
 Call verify.php:
 ```
-http://iqcaptcha.us.to/repo/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   // please use your own URL not iqcaptcha.us.to
+http://iqcaptcha.us.to/repo/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   
+/* please use your own URL not iqcaptcha.us.to */
 ```
 For reCAPTCHA recompatibility, you can also use "response" and "secret" instead of "session" and "sitekey".
 
