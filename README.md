@@ -26,7 +26,9 @@ IQcaptcha tests against IQ with Raven's progressive matrices and high school cal
 Installation
 ----------------------------------------------------------------
 Put files onto webserver.
+
 Run composer install.
+
 
 Principle of Operation
 ----------------------------------------------------------------
@@ -44,7 +46,7 @@ Client Side Usage
 ----------------------------------------------------------------
 1. Load the script in the head:
 ```
-<script src='https://iqcaptcha.us.to/api.js' async defer></script>
+<script src='https://iqcaptcha.us.to/api.js' async defer></script> <!--- please use your own URL not iqcaptcha.us.to --->
 ```
 
 2. Putting this tag into your form:
@@ -67,7 +69,7 @@ Any of the following form fields will contain the correct client session id: iq-
 
 Call verify.php:
 ```
-verify.php?session=[the session id]&sitekey=[the sitekey is optional]
+https://iqcaptcha.us.to/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   // please use your own URL not iqcaptcha.us.to
 ```
 For reCAPTCHA recompatibility, you can also use "response" and "secret" instead of "session" and "sitekey".
 
