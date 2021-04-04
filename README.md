@@ -155,6 +155,8 @@ function iqcaptcha_verify($data)
 
 ```
 
+</details>
+
 ## License
 
  Copyright (C) 2021 Ballerburg9005
