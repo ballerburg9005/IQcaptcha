@@ -18,7 +18,7 @@ margin: 4px;
   </head>
   <body>
 <img class="content" src="http://www.randalolson.com/wp-content/uploads/iq-by-college-major-gender.png" onclick="this.style.display = 'none';">
-    <form action="" method="POST" onsubmit='var bev = document.getElementById("backend_validation"); bev.src = "verify.php?response="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); event.preventDefault();'>
+    <form action="" method="POST" onsubmit='var bev = document.getElementById("backend_validation"); bev.src = "../verify.php?response="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); var bev = document.getElementById("backend_validation2"); bev.src = "backend_example.php?iq-captcha-session="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); event.preventDefault();'>
 <div style="display: inline-block">  </div>
 <hr>
 <div class="content formelement">LEAVE A REPLY</div>
@@ -27,7 +27,7 @@ margin: 4px;
 <div class="content formelement"><textarea rows="4" cols="50"></textarea></div>
 
 <fieldset>
-<div style="margin: 4px;" class="iq-captcha-element" data-sitekey="b35074286103ba87e759d081640433b4" data-wrongmax="6" data-wrongtimeout="6"></div>
+<div style="margin: 4px;" class="iq-captcha-element" data-sitekey="b35074286103ba87e759d081640433b4" data-wrongmax="6" data-wrongtimeout="360"></div>
 </fieldset>
 
 <div class="content formelement"><input type="submit" value="Submit">
@@ -35,8 +35,11 @@ margin: 4px;
 </div>
     </form>
 <div class="content formelement">
-	<h3 style="margin-bottom: 2px">Backend validation:</h3>
+	<h3 style="margin-bottom: 2px">Verify.php output:</h3>
 	<iframe name="output_frame" src="" id="backend_validation" width="1200" height="48">
+	</iframe>  
+	<h3 style="margin-bottom: 2px">Backend validation example:</h3>
+	<iframe name="output_frame2" src="" id="backend_validation2" width="1200" height="48">
 	</iframe>  
 </div>
   </body>

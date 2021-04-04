@@ -92,7 +92,7 @@ if(($_POST['frontend']??"") == "true")
 					'hostname' =>  $_POST['hostname']??"",
 					'stock_parameters' => isset($_POST['data-wrongmax'], $_POST['data-wrongtimeout']) ? false : true,
 					'wrongmax' => max(3, min(10, $_POST['data-wrongmax']??0)),
-					'wrongtimeout' => 60 * max(3, min(1000, $_POST['data-wrongtimeout']??0)),
+					'wrongtimeout' => max(3*60, min(1000*60, $_POST['data-wrongtimeout']??0)),
 					'challenge_ts' => $IP_TIME,
 						];
 				$_SESSION['w'] = [ 
