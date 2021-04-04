@@ -38,10 +38,33 @@ Verify.php will only validate wheter or not the client sitekey matches the backe
 
 Anyone is free to create arbitrary sessions with arbitrary parameters and also to read any sessions if the session key is known. This is not a potential security issue, no sensitive data is stored. But it does allow attackers to create a surplus of requests, until IP-based limits are reached. 
 
-To solve this problem, you can provide "userid". (not implemented yet)
+To solve this problem, you can provide "userid" (not implemented yet!). If provided, only as many requests can be made per userid as specified.
 
-Usage
+Client Side Usage
 ----------------------------------------------------------------
+1. Load the script in the <head>:
+```
+<script src='https://iqcaptcha.us.to/api.js' async defer></script>
+```
+
+2. Putting this tag into your form:
+```
+<div class="iq-captcha-element"></div>
+```
+Any of the following classes can be used: iq-captcha-element, g-iqcaptcha, g-recaptcha.
+
+You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display).
+
+Backend Usage
+----------------------------------------------------------------
+
+Any of the following form fields will contain the correct client session id: iq-captcha-session, g-recaptcha-response, g-iqcaptcha-response .
+
+Call verify.php:
+```
+verify.php?session=[the session id]&sitekey=[the sitekey is optional]
+```
+For reCAPTCHA recompatibility, you can also use "response" and "secret" instead of "session" and "sitekey".
 
 
 ## License
