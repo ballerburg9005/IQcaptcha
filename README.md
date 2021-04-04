@@ -96,7 +96,7 @@ The return data will be in JSON:
 }
 ```
 
-Please check in your backend if all parameters you used do actually match the response. Otherwise the client can potentially make a whole lot more attempts to create a valid sessions than what can't be reasonably avoided.
+Please check in your backend if all parameters you used do actually match the response. Otherwise the client can potentially make a whole lot more attempts to create a valid sessions than what can be reasonably avoided.
 
 
 ## License
