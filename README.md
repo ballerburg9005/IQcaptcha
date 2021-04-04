@@ -102,7 +102,7 @@ Please check in your backend if all parameters you used do actually match the re
   <summary>Backend Code Example</summary>
 
 
-This code is part of [the demo](demo/).
+This code is part of [the demo](demo/). [Live demo](http://iqcaptcha.us.to/repo/demo/).
 
 ```
 <?php
