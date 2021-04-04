@@ -74,7 +74,7 @@ Backend Usage
 
 Any of the following form fields will contain the correct client session id: iq-captcha-session, g-recaptcha-response, g-iqcaptcha-response .
 
-Call verify.php:
+Call verify.php via either GET or POST.
 ```
 http://iqcaptcha.us.to/repo/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   
 /* please use your own URL not iqcaptcha.us.to */
