@@ -56,7 +56,7 @@ Client Side Usage
 ```
 Any of the following classes can be used: iq-captcha-element, g-iqcaptcha, g-recaptcha.
 
-You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display).
+You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display). This is not completely implemented.
 
 
 If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefix them with "data-" as new div tags. 
