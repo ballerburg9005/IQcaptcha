@@ -42,7 +42,7 @@ To solve this problem, you can provide "userid" (not implemented yet!). If provi
 
 Client Side Usage
 ----------------------------------------------------------------
-1. Load the script in the <head>:
+1. Load the script in the head:
 ```
 <script src='https://iqcaptcha.us.to/api.js' async defer></script>
 ```
@@ -55,6 +55,11 @@ Any of the following classes can be used: iq-captcha-element, g-iqcaptcha, g-rec
 
 You can also use what is known with reCAPTCHA as [explicit rendering](https://developers.google.com/recaptcha/docs/display).
 
+If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefex them with "data-" in the div tag. For example:
+```
+<div class="iq-captcha-element" data-sitekey="mytest.com-guestbook-asklfhsrandomdjfskfh" data-wrongmax="5" data-wrongtimeout="999"></div>
+```
+
 Backend Usage
 ----------------------------------------------------------------
 
@@ -65,6 +70,23 @@ Call verify.php:
 verify.php?session=[the session id]&sitekey=[the sitekey is optional]
 ```
 For reCAPTCHA recompatibility, you can also use "response" and "secret" instead of "session" and "sitekey".
+
+The return data will be in JSON:
+```
+{
+  "success": true|false,
+  "stock_parameters": true|false,        // this will be true, if none of the limits (timeouts, max tries, etc.) were changed
+  "challenge_ts": timestamp,             // unix timestamp when the session was created
+  "hostname": string,                    // whatever the client specified (currently unused)
+
+  // these keys can also be specified by the client
+  "wrongmax": int(3-10),                // how often the client can fail the challenge
+  "wrongtimeout": int(3-1000),            // how long client will be timed out in minutes, after failing wrongmax times
+  "sitekey": string,                     // the sitekey / secret used by the client
+}
+```
+
+Please check in your backend if all parameters you used do actually match the response. Otherwise the client can potentially make a whole lot more attempts to create a valid sessions than necessary.
 
 
 ## License
