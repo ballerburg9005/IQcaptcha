@@ -26,8 +26,9 @@ if(file_exists(__DIR__ . '/vendor/autoload.php'))
 	require_once(__DIR__ . '/vendor/autoload.php');
 else
 {
+	error_log("Please run `composer install` in the IQcaptcha directory.");
 	header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error', true, 500);
-	die("Please run `composer install` in the IQcaptcha directory.");
+	die();
 }
 
 $response = ['error' => "Unknown Error.", 'aborted' => false ];
