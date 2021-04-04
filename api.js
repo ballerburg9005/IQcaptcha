@@ -110,9 +110,9 @@ box-sizing: unset;
 `],
 ['.iq-captcha-div-error' , `
 	width: 368px;
-	height: 70px;
+	height: 44px;
 	background-color: white;
-	padding: 24px 12px;
+	padding: 12px 12px;
 	color: #f55;
 	font-size: 12pt;
 	font-face: bold;
@@ -392,7 +392,7 @@ function iq_captcha_verify(data)
 
 function iq_captcha_verify_xhr_error(error, code, checkbox)
 {
-	if(code === "580") code = "Please run `composer install` in the IQcaptcha directory.";
+	if(code === "580") code = "Please run `composer install` in the IQcaptcha directory (same as api.js).";
 	iq_captcha_verify_show_error(error+code);
 	checkbox.innerHTML = "E";
 	checkbox.style["background-color"] = "#fcc";
