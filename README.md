@@ -62,7 +62,7 @@ You can also use what is known with reCAPTCHA as [explicit rendering](https://de
 If you want to specify different limits and parameters, refer to the keys at the end of "Backend Usage" and prefix them with "data-" as new div tags. 
 
 <details>
-  <summary>For example:</summary>
+  <summary>Example</summary>
   
    ```
    <div class="iq-captcha-element" data-sitekey="mytest.com-guestbook-asklfhsrandomdjfskfh" data-wrongmax="5" data-wrongtimeout="999"></div>
@@ -98,6 +98,60 @@ The return data will be in JSON:
 
 Please check in your backend if all parameters you used do actually match the response. Otherwise the client can potentially make a whole lot more attempts to create a valid sessions than what can be reasonably avoided.
 
+<details>
+  <summary>Backend Code Example</summary>
+
+This code is part of [the demo](demo/)
+```
+<?php
+$mywrongmax = 6;
+$mywrongtimeout = 360;
+$mysitekey = "b35074286103ba87e759d081640433b4";
+
+$data = [ 'session' => $_GET['iq-captcha-session'], // this would be _POST in most cases
+          'sitekey' => $mysitekey,
+        ];
+
+$response = json_decode(iqcaptcha_verify($data), true);
+
+if($response['success'] && $response['sitekey'] == $mysitekey && $response['wrongmax'] == $mywrongmax && $response['wrongtimeout'] == $mywrongtimeout)
+{
+    echo "verified";
+    // grant access
+}
+else echo "not verified!";
+
+function iqcaptcha_verify($data)
+{
+    // assemble URL relative to calling script
+    $url = filter_input(INPUT_SERVER, "REQUEST_SCHEME")."://" 
+			. (strlen(filter_input(INPUT_SERVER, 'PHP_AUTH_USER')) > 0 
+				? filter_input(INPUT_SERVER, 'PHP_AUTH_USER') . ":" . filter_input(INPUT_SERVER, 'PHP_AUTH_PW') . "@"
+				: "")
+			. filter_input(INPUT_SERVER, 'HTTP_HOST')
+			. ":" .  filter_input(INPUT_SERVER, "SERVER_PORT")
+		        . "/" . substr(__DIR__, strlen(filter_input(INPUT_SERVER, 'DOCUMENT_ROOT'))) 
+		        . "/../verify.php";
+        
+    $options = array(
+            'http' => array(
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data, '', '&'),
+            ),
+         );
+    $context = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
+    // please use your own url not iqcaptcha.us.to
+
+    if ($response !== false) {
+       return $response;
+    }
+
+    return '{"success": false }';
+}
+
+```
 
 ## License
 
