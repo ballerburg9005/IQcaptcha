@@ -159,6 +159,12 @@ function iqcaptcha_verify($data)
 
 </details>
 
+PhpBB and Wordpress plugins
+----------------------------------------------------------------
+* Don't forget to run composer install in the IQcaptcha directory.
+* Public sitekey and secret/private API key fields must be identical.
+
+
 ## License
 
  Copyright (C) 01.04.2021 Ballerburg9005
