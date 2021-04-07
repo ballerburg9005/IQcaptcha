@@ -36,7 +36,7 @@ To validate on the client side, api.js queries verify.php via XHR. Verify.php cr
 
 Although IQcaptcha accepts public and secret API keys, those **API keys are not required** and only named such for compatibility reasons. Instead they can be used as a site/application specific token (e.g. test.com-myforum-VZCck432random5jk372). If you switch a reCAPTCHA plugin to IQcaptcha, make sure that public key and secret key are identical.
 
-Verify.php will only validate wheter or not the client sitekey matches the backend parameter "sitekey" if provided, and if the session is valid. Please check from your backend if all the data-... parameters (wrongmax, sitekey, userid, etc.) you provided do actually match your client-side provided parameters.
+Verify.php will only validate whether or not the client sitekey matches the backend parameter "sitekey" if provided, and if the session is valid. Please check from your backend if all the data-... parameters (wrongmax, sitekey, userid, etc.) you provided do actually match your client-side provided parameters.
 
 Anyone is free to create arbitrary sessions with arbitrary parameters and also to read any sessions if the session key is known. This is not a potential security issue, no sensitive data is stored. But it does allow attackers to create a surplus of requests, until IP-based limits are reached. 
 
