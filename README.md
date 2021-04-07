@@ -86,12 +86,14 @@ The return data will be in JSON:
 {
   "success": true|false,
   "stock_parameters": true|false,        // this will be true, if none of the limits (timeouts, max tries, etc.) were changed
-  "challenge_ts": timestamp,             // unix timestamp when the session was created
+  "create_time":  timestamp,             // unix timestamp when the session was created
+  "challenge_ts": timestamp,             // Human readable timestamp
   "hostname": string,                    // whatever the client specified (currently unused)
 
   // these keys can also be specified by the client
   "wrongmax": int(3-10),                 // how often the client can fail the challenge
   "wrongtimeout": int(180-60000),        // how long client will be timed out in seconds, after failing wrongmax times
+  "maxtime": int(180-43440),             // how long the session will be valid in seconds (between 3 minutes to 7 days)
   "sitekey": string,                     // the sitekey / secret used by the client
 }
 ```
