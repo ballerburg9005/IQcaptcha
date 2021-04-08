@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="http://iqcaptcha.us.to/">
+  <a href="https://iqcaptcha.us.to/">
     <img src="demo/logo_489_text.png" alt="IQcaptcha">
   </a>
 </h1>
 
 <p align=center>
-  <strong><a href="http://iqcaptcha.us.to/">Website</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/repo/demo/demo.html">Demo</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/forum">Forum</a></strong>
+  <strong><a href="https://iqcaptcha.us.to/">Website</a></strong>
+  | <strong><a href="https://iqcaptcha.us.to/repo/demo/demo.html">Demo</a></strong>
+  | <strong><a href="https://iqcaptcha.us.to/forum">Forum</a></strong>
 </p>
 
 <p align="center">
@@ -34,9 +34,9 @@ Principle of Operation
 ----------------------------------------------------------------
 To validate on the client side, api.js queries verify.php via XHR. Verify.php creates a PHP session and stores the state of verification in it. To validate on the backend, the server has to query verify.php with the session ID via http request. 
 
-Although IQcaptcha accepts public and secret API keys, those **API keys are not required** and only named such for compatibility reasons. Instead they can be used as a site/application specific token (e.g. test.com-myforum-VZCck432random5jk372).
+Although IQcaptcha accepts public and secret API keys, those **API keys are not required** and only named such for compatibility reasons. Instead they can be used as a site/application specific token (e.g. test.com-myforum-VZCck432random5jk372). If you switch a reCAPTCHA plugin to IQcaptcha, make sure that public key and secret key are identical.
 
-Verify.php will only validate wheter or not the client sitekey matches the backend parameter "sitekey" if provided, and if the session is valid. Please check from your backend if all the data-... parameters (wrongmax, sitekey, userid, etc.) you provided do actually match your client-side provided parameters.
+Verify.php will only validate whether or not the client sitekey matches the backend parameter "sitekey" if provided, and if the session is valid. Please check from your backend if all the data-... parameters (wrongmax, sitekey, userid, etc.) you provided do actually match your client-side provided parameters.
 
 Anyone is free to create arbitrary sessions with arbitrary parameters and also to read any sessions if the session key is known. This is not a potential security issue, no sensitive data is stored. But it does allow attackers to create a surplus of requests, until IP-based limits are reached. 
 
@@ -46,7 +46,7 @@ Client Side Usage
 ----------------------------------------------------------------
 1. Load the script in the head:
 ```
-<script src='http://iqcaptcha.us.to/repo/api.js' async defer></script> 
+<script src='https://iqcaptcha.us.to/repo/api.js' async defer></script> 
 <!--- please use your own URL not iqcaptcha.us.to --->
 ```
 
@@ -74,9 +74,9 @@ Backend Usage
 
 Any of the following form fields will contain the correct client session id: iq-captcha-session, g-recaptcha-response, g-iqcaptcha-response .
 
-Call verify.php:
+Call verify.php via either GET or POST.
 ```
-http://iqcaptcha.us.to/repo/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   
+https://iqcaptcha.us.to/repo/verify.php?session=[the session id]&sitekey=[the sitekey is optional]   
 /* please use your own URL not iqcaptcha.us.to */
 ```
 For reCAPTCHA recompatibility, you can also use "response" and "secret" instead of "session" and "sitekey".
@@ -86,12 +86,14 @@ The return data will be in JSON:
 {
   "success": true|false,
   "stock_parameters": true|false,        // this will be true, if none of the limits (timeouts, max tries, etc.) were changed
-  "challenge_ts": timestamp,             // unix timestamp when the session was created
+  "create_time":  timestamp,             // unix timestamp when the session was created
+  "challenge_ts": timestamp,             // Human readable timestamp
   "hostname": string,                    // whatever the client specified (currently unused)
 
   // these keys can also be specified by the client
   "wrongmax": int(3-10),                 // how often the client can fail the challenge
   "wrongtimeout": int(180-60000),        // how long client will be timed out in seconds, after failing wrongmax times
+  "maxtime": int(180-43440),             // how long the session will be valid in seconds (between 3 minutes to 7 days)
   "sitekey": string,                     // the sitekey / secret used by the client
 }
 ```
@@ -102,7 +104,7 @@ Please check in your backend if all parameters you used do actually match the re
   <summary>Backend Code Example</summary>
 
 
-This code is part of [the demo](demo/).
+This code is part of [the demo](demo/). Live demo: [here](https://iqcaptcha.us.to/repo/demo/demo.html).
 
 ```
 <?php
@@ -144,7 +146,6 @@ function iqcaptcha_verify($data)
          );
     $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
-    // please use your own url not iqcaptcha.us.to
 
     if ($response !== false) {
        return $response;
@@ -155,9 +156,17 @@ function iqcaptcha_verify($data)
 
 ```
 
+</details>
+
+PhpBB and Wordpress plugins
+----------------------------------------------------------------
+* Don't forget to run composer install in the IQcaptcha directory.
+* Public sitekey and secret/private API key fields must be identical.
+
+
 ## License
 
- Copyright (C) 2021 Ballerburg9005
+ Copyright (C) 01.04.2021 Ballerburg9005
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
