@@ -146,7 +146,6 @@ function iqcaptcha_verify($data)
          );
     $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
-    // please use your own url not iqcaptcha.us.to
 
     if ($response !== false) {
        return $response;
