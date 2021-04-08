@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="http://iqcaptcha.us.to/">
+  <a href="https://iqcaptcha.us.to/">
     <img src="demo/logo_489_text.png" alt="IQcaptcha">
   </a>
 </h1>
 
 <p align=center>
-  <strong><a href="http://iqcaptcha.us.to/">Website</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/repo/demo/demo.html">Demo</a></strong>
-  | <strong><a href="http://iqcaptcha.us.to/forum">Forum</a></strong>
+  <strong><a href="https://iqcaptcha.us.to/">Website</a></strong>
+  | <strong><a href="https://iqcaptcha.us.to/repo/demo/demo.html">Demo</a></strong>
+  | <strong><a href="https://iqcaptcha.us.to/forum">Forum</a></strong>
 </p>
 
 <p align="center">
