@@ -42,6 +42,12 @@ ini_set("session.use_cookies", 0);
 $gcompat = ($_POST['response']??$_GET['response']??"") === "" ? "session" : "response";
 session_id(substr(preg_replace('/[[:^print:]]/', '', $_POST[$gcompat]??$_GET[$gcompat]??""), 0, 1024));
 session_start();
+
+// destroy session if too old
+if(isset($_SESSION['v']) && time() > $_SESSION['v']['create_time']+$_SESSION['v']['maxtime'])
+	foreach ($_SESSION as $k => $v)
+		unset($_SESSION[$k]);
+
 if(($_POST['frontend']??"") == "true")
 {
 	sleep(1);
@@ -65,7 +71,7 @@ if(($_POST['frontend']??"") == "true")
 		switch($_POST['action'])
 		{
 		case "create_session":
-			if($_SESSION['v']['success']??false)
+			if(($_SESSION['v']['success']??false))
 			{
 				$response['error'] = "";
 				$response['validated'] = true;
@@ -90,10 +96,12 @@ if(($_POST['frontend']??"") == "true")
 					'success' => false,
 					'sitekey' =>  $_POST['data-sitekey']??"",
 					'hostname' =>  $_POST['hostname']??"",
-					'stock_parameters' => isset($_POST['data-wrongmax'], $_POST['data-wrongtimeout']) ? false : true,
+					'stock_parameters' => isset($_POST['data-wrongmax'], $_POST['data-wrongtimeout'], $_POST['data-maxtime']) ? false : true,
 					'wrongmax' => max(3, min(10, $_POST['data-wrongmax']??0)),
 					'wrongtimeout' => max(3*60, min(1000*60, $_POST['data-wrongtimeout']??0)),
-					'challenge_ts' => $IP_TIME,
+					'challenge_ts' => $IP_TIME, // TODO make google alike timestamp here + docs
+					'create_time' => $IP_TIME,
+					'maxtime' => max(3*60, min(1440*60, $_POST['data-maxtime']??1800)),
 						];
 				$_SESSION['w'] = [ 
 					'wrongcounter' => $_SESSION['w']['wrongcounter'] ?? 1,
@@ -113,7 +121,7 @@ if(($_POST['frontend']??"") == "true")
 					$_SESSION['v']['success'] = true;
 					$_SESSION['w']['wrongcounter'] = 0;
 					$IP_ADDR = "remove";
-					$IP_TIME = $_SESSION['v']['challenge_ts'];
+					$IP_TIME = $_SESSION['v']['create_time'];
 				}
 				else 
 				{

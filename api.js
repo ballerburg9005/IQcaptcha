@@ -45,10 +45,11 @@ function urlencodedict(data)
 
 
 createClasses([
-['.iq-captcha-element, .iq-captcha-element :before, .iq-captcha-element :after' , `
+['div.iq-captcha-element, .iq-captcha-element :before, .iq-captcha-element :after' , `
 box-sizing: unset;
 `],
-['.iq-captcha-element' , `
+['div.iq-captcha-element *' , `margin: initial; padding: initial;`],
+['div.iq-captcha-element' , `
 	color: black;
 	width: 256px;
 	height: 72px;
@@ -60,12 +61,12 @@ box-sizing: unset;
 	font-size: 12pt;
 	line-height: normal;
 `],
-['.iq-captcha-element-added', `display: table; height: 72px; width: 256px; position: absolute;`],
-['.iq-ldiv', `width: 158px; display: table-cell; height: 100%; vertical-align: middle`],
-['.iq-rdiv', `width: 84px; display: table-cell; height: 100%; vertical-align: middle; text-align: center`],
-['.iq-center-table' , `display: table;`],
-['.iq-center-td' , `display: table-cell; height: 100%; vertical-align: middle`],
-['.iq-checkbox-div' , `
+['div.iq-captcha-element-added', `display: table; height: 72px; width: 256px; position: absolute;`],
+['div.iq-ldiv', `width: 158px; display: table-cell; height: 100%; vertical-align: middle`],
+['div.iq-rdiv', `width: 84px; display: table-cell; height: 100%; vertical-align: middle; text-align: center`],
+['div.iq-center-table' , `display: table;`],
+['div.iq-center-td' , `display: table-cell; height: 100%; vertical-align: middle`],
+['div.iq-checkbox-div' , `
 	width: 24px;
 	height: 24px;
 	border: 2px solid #bbb;
@@ -76,17 +77,17 @@ box-sizing: unset;
 	vertical-align: middle;
 	line-height: 24px;
 `],
-['.iq-checkbox-relative-anchor' , `position:relative; left: 0px; margin: 0; padding: 0;`],
-['.iq-logo-holder' , `display: inline-block;`],
-['.iq-logo' , `
+['div.iq-checkbox-relative-anchor' , `position:relative; left: 0px; margin: 0; padding: 0;`],
+['div.iq-logo-holder' , `display: inline-block;`],
+['div.iq-logo' , `
 	width: 48px;
 	height: 48px;
 	background: url(${iqcaptcha_url}/logo_48.png);
 	background-repeat: no-repeat;
 `],
-['.iq-logo-text' , `font-size: 8pt; color: #666;`],
+['div.iq-logo-text' , `font-size: 8pt; color: #666;`],
 
-['.iq-captcha-div-padding' , `
+['div.iq-captcha-div-padding' , `
 	z-index: -1;
 	pointer-events: none;
 	position: absolute;
@@ -98,7 +99,7 @@ box-sizing: unset;
 	background-color: transparent;
 `],
 
-['.iq-captcha-div' , `
+['div.iq-captcha-div' , `
 	position: absolute;
 	top: -48px;
 	left: 48px;
@@ -108,7 +109,7 @@ box-sizing: unset;
 	background-color: white;
 	z-index: 99999;
 `],
-['.iq-captcha-div-error' , `
+['div.iq-captcha-div-error' , `
 	width: 368px;
 	height: 44px;
 	background-color: white;
@@ -118,8 +119,8 @@ box-sizing: unset;
 	font-face: bold;
 `],
 
-['.iq-header' , `margin-bottom: 0px; margin-left: 12px; margin-right: 12px; margin-top: 8px; color: black; font-size: 16pt; display: inline-block`],
-['.iq-captcha-div-arrow' , `
+['div.iq-header' , `margin-bottom: 0px; margin-left: 12px; margin-right: 12px; margin-top: 8px; color: black; font-size: 16pt; display: inline-block`],
+['div.iq-captcha-div-arrow' , `
 	position: absolute;
 	top: -38px;
 	left: 0px;
@@ -132,7 +133,7 @@ box-sizing: unset;
 	pointer-events: none;
 	z-index: 999990;
 `],
-['.iq-captcha-div-arrow-top' , `
+['div.iq-captcha-div-arrow-top' , `
 	left: 1px;
 	border-width: 24px;
 	border-color: transparent;
@@ -140,10 +141,10 @@ box-sizing: unset;
 	z-index: 999991;
 `],
 
-['.iq-captcha-above-footer' , `padding-left: 8px; padding-top: 4px; color: #f55; font-size: 10pt`],
-['.iq-captcha-footer' , `padding: 8px;`],
-['.iq-captcha-footer-left' , `float: left;`],
-['.iq-captcha-footer-right' , `float: right;`],
+['div.iq-captcha-above-footer' , `padding-left: 8px; padding-top: 4px; color: #f55; font-size: 10pt`],
+['div.iq-captcha-footer' , `padding: 8px;`],
+['div.iq-captcha-footer-left' , `float: left;`],
+['div.iq-captcha-footer-right' , `float: right;`],
 ['button.iq-captcha-verify-button' , `
 	height: 48px;
 	font-size: 14pt;
@@ -157,7 +158,7 @@ box-sizing: unset;
 	text-transform: initial;
 	font-family: helvetica,arial,sans-serif;
 `],	
-['.iq-captcha-img' , `padding-top: 6px;`],
+['img.iq-captcha-img' , `padding-top: 6px;`],
 ['input.iq-captcha-answer' , `
 	height: 48px;
 	font-size: 14px;
@@ -169,7 +170,7 @@ box-sizing: unset;
 	color: black;
 	font-family: helvetica,arial,sans-serif;
 `],
-['.iq-lds-ring', `
+['div.iq-lds-ring', `
   display: inline-block;
   position: relative;
   top: -8px;
@@ -177,7 +178,7 @@ box-sizing: unset;
   width: 48px;
   height: 48px;
 `],
-['.iq-lds-ring div', `
+['div.iq-lds-ring div', `
   box-sizing: border-box;
   display: block;
   position: absolute;
@@ -188,9 +189,9 @@ box-sizing: unset;
   animation: iq-lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   border-color: #093 transparent transparent transparent;
 `],
-['.iq-lds-ring div:nth-child(1)', `animation-delay: -0.45s;`],
-['.iq-lds-ring div:nth-child(2)', `animation-delay: -0.3s;`],
-['.iq-lds-ring div:nth-child(3)', `animation-delay: -0.15s;`],
+['div.iq-lds-ring div:nth-child(1)', `animation-delay: -0.45s;`],
+['div.iq-lds-ring div:nth-child(2)', `animation-delay: -0.3s;`],
+['div.iq-lds-ring div:nth-child(3)', `animation-delay: -0.15s;`],
 ['@keyframes iq-lds-ring', `
   0% {
     transform: rotate(0deg);
@@ -210,7 +211,7 @@ class greCaptcha {
 	}
 }
 const grecaptcha = new greCaptcha();
-
+const giqcaptcha = new greCaptcha();
 
 grecaptcha.render(null, null);
 
@@ -218,7 +219,9 @@ function iq_captcha_render(container, parms)
 {
 	if(container) 
 	{
-		for(x in document.querySelectorAll(".iq-captcha-element")) x.className.replace('iq-captcha-element', '');
+		console.dir(container);
+		if(document.querySelector("#"+container))  container = document.querySelector("#"+container);
+		for(x of document.querySelectorAll(".iq-captcha-element")) x.className.replace('iq-captcha-element', '');
 		let element = document.createElement("div");
 		element.className = "iq-captcha-element";
 		container.appendChild(element);
@@ -306,9 +309,10 @@ function iq_captcha_verify(data)
 
 	for(x of ['#g-recaptcha-response', '#g-iqcaptcha-response']) document.querySelector(x).value = data.session;
 
-	for(x of ['data-sitekey', 'data-wrongmax', 'data-wrongtimeout'])
+	for(x of ['data-sitekey', 'data-wrongmax', 'data-wrongtimeout', 'data-maxtime'])
 	{
 		data[x] = document.querySelector(".iq-captcha-element").getAttribute(x);
+		if(!data[x]) data[x] = document.querySelector(".iq-captcha-element").parentElement.getAttribute(x); 		// h4xx!
 		if(!data[x]) delete data[x];
 	}
 
@@ -512,8 +516,8 @@ function iq_captcha_verify_populate(re)
 		if(x && anchor) anchor.style.display = 'block'; 
 		else anchor.style.display = "none";
 			}; 
-	/* resize stuff */
 
+	/* resize stuff */
 	var x = 0;
 	var oldheight = -1337;
 	var intervalID = setInterval(function(){
