@@ -81,15 +81,29 @@ if(($_POST['frontend']??"") == "true")
 				do $pick = rand(0,count($s)-1); while(!isset($s[$pick]));
 				$modified_answer = generate_polynomial($s[$pick]['a'], 'pattern');
 
-				$imagick = new \Imagick(realpath($s[$pick]['u']));
-				$imagick->resizeImage($imagick->getImageWidth()+rand(0,50), $imagick->getImageHeight()+rand(0,50), Imagick::FILTER_LANCZOS,1);
-				$imagick->addNoiseImage(\Imagick::NOISE_LAPLACIAN);
-				$imagick->addNoiseImage(\Imagick::NOISE_IMPULSE);
-				$imagick->addNoiseImage(\Imagick::NOISE_IMPULSE);
-				$imagick->setImageFormat("jpg");
+				$imagick_ravens = generate_ravens_imagick($s, $pick);
+				$imagick_text = generate_text_imagick($modified_answer['text'], 20);
 
-				$response['image'] = base64_encode($imagick->getImageBlob());
-				$response['text'] = $modified_answer['text'];//." ".$modified_answer['answer'];
+				$imagick_ravens->borderImage("rgb(255,255,255)", 10,10);
+				$imagick_ravens->waveImage(5, 100);
+				$imagick_ravens->cropImage($imagick_ravens->getImageWidth()-20, $imagick_ravens->getImageHeight()-20, 10, 10);
+
+				$imagick_ravens = distort_perspective($imagick_ravens, 100,250);
+//				$imagick_ravens->compositeImage(generate_noise_imagick(0.2, $imagick_ravens->getImageWidth(), $imagick_ravens->getImageHeight()), Imagick::COMPOSITE_BLEND, 0, 0);
+				$imagick_ravens->compositeImage(generate_noise_imagick(0.4, $imagick_ravens->getImageWidth(), $imagick_ravens->getImageHeight()), Imagick::COMPOSITE_MULTIPLY, 0, 0);
+//`				$imagick_ravens->compositeImage(generate_noise_imagick(0.4, $imagick_ravens->getImageWidth(), $imagick_ravens->getImageHeight()), Imagick::COMPOSITE_MULTIPLY, 0, 0);
+
+
+				$imagick_text->compositeImage(generate_noise_imagick(0.4, $imagick_text->getImageWidth(), $imagick_text->getImageHeight()), Imagick::COMPOSITE_BLEND, 0, 0);
+//				$imagick_text->compositeImage(generate_noise_imagick(0.4, $imagick_text->getImageWidth(), $imagick_text->getImageHeight()), Imagick::COMPOSITE_MULTIPLY, 0, 0);
+//				$imagick_text->compositeImage(generate_noise_imagick(0.4, $imagick_text->getImageWidth(), $imagick_text->getImageHeight()), Imagick::COMPOSITE_MULTIPLY, 0, 0);
+
+				$imagick_text->resizeImage($imagick_ravens->getImageWidth(), $imagick_text->getImageHeight(), Imagick::FILTER_LANCZOS,1);
+
+				$imagick_text->waveImage(0.5, 10);
+
+				$response['image'] = base64_encode($imagick_ravens->getImageBlob());
+				$response['text'] = base64_encode($imagick_text->getImageBlob()); ;//." ".$modified_answer['answer'];
 				$response['session'] = session_id();
 				$response['error'] = "";
 				$_SESSION['v'] = [ 
@@ -194,10 +208,98 @@ function generate_polynomial($x, $thingy)
 	$p = rand(1,3);
 	$q = [$polynomial, $polynomial->differentiate(), $polynomial->differentiate()->differentiate(), $polynomial->differentiate()->differentiate()->differentiate()];
 	
-	$text = "let x be the correct ".$thingy."<br>"
-		."and f(x) = ".$polynomial."<br>"
+	$text = "let x be the correct ".$thingy."\n"
+		."and f(x) = ".$polynomial."\n"
 		."what number is f".str_repeat("'", $p)."(x) + x ?";
 	return(['answer' => $q[$p]($x)+$x, 'text' => $text]);
 
+}
+
+function generate_text_imagick($text, $fontsize)
+{
+	$draw = new \ImagickDraw();
+	$draw->setStrokeColor("rgb(0, 0, 0)");
+	$draw->setFillColor("rgb(0, 0, 0)");
+	$draw->setStrokeWidth(1);
+	$draw->setFontSize($fontsize);
+	$draw->setTextAlignment(\Imagick::ALIGN_CENTER);
+	$draw->annotation(180, $fontsize, $text);
+
+	$imagick = new \Imagick();
+	$imagick->newImage(360, $fontsize*(substr_count($text, "\n")+1) + $fontsize*0.5, "rgb(255, 255, 255)");
+	$imagick->setImageFormat("jpg");
+
+	$imagick->drawImage($draw);
+
+	return($imagick);
+}
+
+function generate_ravens_imagick($s, $pick)
+{
+	$imagick = new \Imagick(realpath($s[$pick]['u']));
+	$imagick->resizeImage(370-rand(5,25), (400/$imagick->getImageWidth())*$imagick->getImageHeight()-rand(5,25), Imagick::FILTER_LANCZOS,1);
+	$imagick->setImageFormat("jpg");
+
+
+	return($imagick);
+}
+
+function generate_noise_imagick($alpha, $x, $y)
+{
+	$randstuff = ""; for($i=0; $i < 20; $i++) $randstuff .= generateRandomString(60)."\n";
+	$draw = new \ImagickDraw();
+	$draw->setFontSize(10);
+	$draw->annotation(0, 10, $randstuff );
+
+	$imagick = new \Imagick();
+	$imagick->newImage(rand($x*0.25,$x*0.5), rand($y*0.25,$y*0.5), "rgba(255,255,255,255)");
+	$imagick->setImageFormat("png");
+	$imagick->addNoiseImage(\Imagick::NOISE_LAPLACIAN);
+	$imagick->addNoiseImage(\Imagick::NOISE_IMPULSE);
+	$imagick->addNoiseImage(\Imagick::NOISE_IMPULSE);
+	$imagick->drawImage($draw);
+	$imagick->resizeImage($x, $y, Imagick::FILTER_LANCZOS,1);
+	if(method_exists("Imagick", "setImageOpacity"))
+		$imagick->setImageOpacity($alpha);
+	else if(method_exists("Imagick", "setImageAlpha"))
+		$imagick->setImageAlpha($alpha);
+	else // doh!
+		$imagick->resizeImage(1, 1, Imagick::FILTER_LANCZOS,1);
+
+	return($imagick);
+
+}
+function distort_perspective($im, $a, $b)
+{
+	$size = [$im->getImageWidth(), $im->getImageHeight()];
+	/* Fill new visible areas with transparent */
+	$im->setImageVirtualPixelMethod(Imagick::VIRTUALPIXELMETHOD_WHITE);
+
+	/* Activate matte */
+	$im->setImageMatte(true);
+
+	/* Control points for the distortion */
+	$controlPoints = array( 0, 0, 
+				-rand($a, $b), -rand($a, $b),
+
+				0, $im->getImageHeight(),
+				-rand($a, $b), $im->getImageHeight()+rand($a, $b),
+
+				$im->getImageWidth(), 0,
+				$im->getImageWidth() + rand($a, $b), -rand($a, $b),
+
+				$im->getImageWidth(), $im->getImageHeight(),
+				$im->getImageWidth() + rand($a, $b), $im->getImageHeight() + rand($a, $b));
+
+	/* Perform the distortion */                       
+	$im->distortImage(Imagick::DISTORTION_PERSPECTIVE, $controlPoints, true);
+
+	$im->resizeImage($size[0], $size[1], Imagick::FILTER_LANCZOS,1);
+
+	return($im);
+}
+function generateRandomString($length = 10) 
+{
+    return substr(str_shuffle(str_repeat($x='         0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
 }
 ?>

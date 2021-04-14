@@ -121,7 +121,6 @@ box-sizing: unset;
 	font-face: bold;
 `],
 
-['div.iq-header' , `margin-bottom: 0px; margin-left: 12px; margin-right: 12px; margin-top: 8px; color: black; font-size: 16pt; display: inline-block`],
 ['div.iq-captcha-div-arrow' , `
 	position: absolute;
 	top: -38px;
@@ -496,7 +495,7 @@ function iq_captcha_verify_populate(re)
 	w['iq-captcha-div'].insertAdjacentHTML( 'beforeend' , `
 	<center>
 	<img src="data:image/jpeg;charset=utf-8;base64, ${re.image}" class="iq-captcha-img" alt="a captcha image showing patterns or values to solve">
-	<div class="iq-header">${re.text}</span>
+	<img src="data:image/jpeg;charset=utf-8;base64, ${re.text}" class="iq-captcha-text" alt="a math problem formulated in text">
 	</center>
 	<div class="iq-captcha-above-footer"> &nbsp; 
 	</div>
@@ -547,7 +546,7 @@ function iq_captcha_verify_populate(re)
 			w['iq-captcha-div'].style.height = (button_rect.bottom - captcha_rect.top + 6) + "px" ;
 			w['iq-captcha-div'].style.top = (- anchor_margin - (parseInt(w['iq-captcha-div'].style.height)*0.5)) + "px";
 			// if it "overflows" at the bottom
-			console.log(w['iq-captcha-div'].getBoundingClientRect().bottom, window.scrollY, new_viewport_height, old_viewport_height);
+			//console.log(w['iq-captcha-div'].getBoundingClientRect().bottom, window.scrollY, new_viewport_height, old_viewport_height);
 			if(w['iq-captcha-div'].getBoundingClientRect().bottom + window.scrollY > old_viewport_height) 
 				w['iq-captcha-div'].style.top = (parseInt(w['iq-captcha-div'].style.top) 
 								- (w['iq-captcha-div'].getBoundingClientRect().bottom + window.scrollY - old_viewport_height)) + "px";
