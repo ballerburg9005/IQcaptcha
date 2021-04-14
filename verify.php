@@ -118,7 +118,7 @@ if(($_POST['frontend']??"") == "true")
 					'maxtime' => max(3*60, min(1440*60, $_POST['data-maxtime']??1800)),
 						];
 				$_SESSION['w'] = [ 
-					'wrongcounter' => $_SESSION['w']['wrongcounter'] ?? 1,
+					'wrongcounter' => $_SESSION['w']['wrongcounter'] ?? 0 + 1,
 					'lasttime' => 0,
 					'answer' => strval($modified_answer['answer']),
 						];
