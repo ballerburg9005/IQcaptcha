@@ -18,7 +18,7 @@ margin: 4px;
   </head>
   <body>
 <img class="content" src="harrow-psychotic-768x649.jpeg" onclick="this.style.display = 'none';">
-    <form action="" method="POST" onsubmit='var bev = document.getElementById("backend_validation"); bev.src = "../verify.php?response="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); var bev = document.getElementById("backend_validation2"); bev.src = "backend_example.php?iq-captcha-session="+getCookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); event.preventDefault();'>
+    <form action="" method="POST" onsubmit='var bev = document.getElementById("backend_validation"); bev.src = "../verify.php?response="+iq_captcha_get_cookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); var bev = document.getElementById("backend_validation2"); bev.src = "backend_example.php?iq-captcha-session="+iq_captcha_get_cookie("iq-captcha-session-b35074286103ba87e759d081640433b4"); event.preventDefault();'>
 <div style="display: inline-block">  </div>
 <hr>
 <div class="content formelement">LEAVE A REPLY</div>
