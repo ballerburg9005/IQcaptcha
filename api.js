@@ -9,7 +9,8 @@ let iqcaptcha_url = iqcaptcha_urlurl.href.split('?')[0];
 iqcaptcha_url = iqcaptcha_url.slice(0,iqcaptcha_url.lastIndexOf("/")+1);
 
 
-function createClasses(classes){
+
+function iq_captcha_create_classes(classes){
 	var style = document.createElement('style');
 	style.type = 'text/css';
 	document.querySelector('head').appendChild(style);
@@ -24,7 +25,7 @@ function createClasses(classes){
 }
 
 
-function getCookie(name) 
+function iq_captcha_get_cookie(name) 
 {
   const parts =  `; ${document.cookie}`.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(';').shift();
@@ -32,7 +33,7 @@ function getCookie(name)
 }
 
 
-function urlencodedict(data)
+function iq_captcha_urlencodedict(data)
 {
 	let out = [];
 	for (var key in data) {
@@ -44,7 +45,7 @@ function urlencodedict(data)
 }
 
 
-createClasses([
+iq_captcha_create_classes([
 ['div.iq-captcha-element, .iq-captcha-element :before, .iq-captcha-element :after' , `
 box-sizing: unset;
 `],
@@ -82,7 +83,8 @@ box-sizing: unset;
 ['div.iq-logo' , `
 	width: 48px;
 	height: 48px;
-	background: url(${iqcaptcha_url}/logo_48.png);
+	background: url(${iqcaptcha_url}/logo_256.png);
+	background-size: 48px 48px;
 	background-repeat: no-repeat;
 `],
 ['div.iq-logo-text' , `font-size: 8pt; color: #666;`],
@@ -273,7 +275,7 @@ function iq_captcha_render(container, parms)
 
 		`);
 		let sitekey = document.querySelector(".iq-captcha-element").getAttribute('data-sitekey'); sitekey = sitekey?"-"+sitekey:"";
-		if(getCookie("iq-captcha-session"+sitekey) != null) document.querySelector(".iq-captcha-session").value = getCookie("iq-captcha-session"+sitekey);
+		if(iq_captcha_get_cookie("iq-captcha-session"+sitekey) != null) document.querySelector(".iq-captcha-session").value = iq_captcha_get_cookie("iq-captcha-session"+sitekey);
 
 		const main_form = document.querySelector(".iq-captcha-session").form;
 		if(main_form) main_form.addEventListener('submit', function(event) { if(!iq_captcha_prevent_submit()) event.preventDefault(); });
@@ -388,7 +390,7 @@ function iq_captcha_verify(data)
 	    };
 
 	data['frontend'] = "true";
-	xhr.send(urlencodedict(data).join('&'));
+	xhr.send(iq_captcha_urlencodedict(data).join('&'));
 
 
 }
@@ -478,6 +480,9 @@ function iq_captcha_verify_show_error(error)
 
 function iq_captcha_verify_populate(re)
 {
+	var old_viewport_height = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
+					document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
+
 	let w = {};
 	for(x of ['iq-captcha-div-padding', 'iq-captcha-div-arrow', 'iq-captcha-div', 'iq-captcha-div-arrow-top'])
 	{
@@ -509,7 +514,7 @@ function iq_captcha_verify_populate(re)
 	if(main_form) main_form.addEventListener('submit', iq_captcha_verify_and_preventDefault);
 	document.querySelector(".iq-captcha-answer").focus();
 
-	window.onmouseup = function(e) {
+	window.onmousedown = function(e) {
 		let x = e.target;
 		do { if(x.id === 'iq-captcha-element-added') break; x = x.parentElement; } while(x);
 		const anchor = document.querySelector(".iq-checkbox-relative-anchor"); 
@@ -520,44 +525,47 @@ function iq_captcha_verify_populate(re)
 	/* resize stuff */
 	var x = 0;
 	var oldheight = -1337;
+	var oldviewportheight = old_viewport_height;
 	var intervalID = setInterval(function(){
 		const button = document.querySelector(".iq-captcha-verify-button");
 
-		if (++x === 5 || !button ) { window.clearInterval(intervalID); return false; }
+		if(++x === 5 ) { window.clearInterval(intervalID); return false; }
+		if(!button) return false;
 
-		var rectb = button.getBoundingClientRect();
-		var rectc = w['iq-captcha-div'].getBoundingClientRect();
-		var recto = document.querySelector(".iq-checkbox-div").getBoundingClientRect();
+		const button_rect = button.getBoundingClientRect();
+		const captcha_rect = w['iq-captcha-div'].getBoundingClientRect();
+		const arrow_rect = document.querySelector(".iq-captcha-div-arrow").getBoundingClientRect();
+	
+		const anchor_margin = 12+(arrow_rect.bottom-arrow_rect.top);
 
-		if(parseInt(rectb.bottom - rectc.top) != oldheight)
+		const new_viewport_height = Math.max( document.body.scrollHeight, document.body.offsetHeight, 
+						document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );
+
+		if(parseInt(button_rect.bottom - captcha_rect.top) != oldheight || new_viewport_height > oldviewportheight)
 		{
-			oldheight = parseInt(rectb.bottom - rectc.top);
 			w['iq-captcha-div'].style.width = (12 + document.querySelector(".iq-captcha-img").naturalWidth) + "px";	
-			w['iq-captcha-div'].style.height = (rectb.bottom - rectc.top + 6) + "px" ;
-			w['iq-captcha-div'].style.top = (-parseInt(w['iq-captcha-div'].style.height)*0.5) + "px";
-
+			w['iq-captcha-div'].style.height = (button_rect.bottom - captcha_rect.top + 6) + "px" ;
+			w['iq-captcha-div'].style.top = (- anchor_margin - (parseInt(w['iq-captcha-div'].style.height)*0.5)) + "px";
 			// if it "overflows" at the bottom
-			const viewport_height = Math.max(w['iq-captcha-div'].clientHeight || 0, window.innerHeight || 0);
-			if(w['iq-captcha-div'].getBoundingClientRect().bottom + window.scrollY > viewport_height) 
-				w['iq-captcha-div'].style.top = (parseInt(w['iq-captcha-div'].style.top) - (w['iq-captcha-div'].getBoundingClientRect().bottom - viewport_height + 32)) + "px";
-
-			console.log("w: "+w['iq-captcha-div'].style.width + ", h: "+w['iq-captcha-div'].style.height);
-			console.log("viewport_height: "+ viewport_height + ", scrollY: "+window.scrollY);
-			console.log("bottom: "+ w['iq-captcha-div'].getBoundingClientRect().bottom + ", top: "+w['iq-captcha-div'].getBoundingClientRect().top);
-
+			console.log(w['iq-captcha-div'].getBoundingClientRect().bottom, window.scrollY, new_viewport_height, old_viewport_height);
+			if(w['iq-captcha-div'].getBoundingClientRect().bottom + window.scrollY > old_viewport_height) 
+				w['iq-captcha-div'].style.top = (parseInt(w['iq-captcha-div'].style.top) 
+								- (w['iq-captcha-div'].getBoundingClientRect().bottom + window.scrollY - old_viewport_height)) + "px";
 			// if it moves above the anchor
-			if(w['iq-captcha-div'].getBoundingClientRect().bottom < w['iq-captcha-div-arrow'].getBoundingClientRect().top)
-				w['iq-captcha-div'].style.top = (20 -parseInt(w['iq-captcha-div'].style.height)) + "px";
-
+			if(w['iq-captcha-div'].getBoundingClientRect().bottom < arrow_rect.top+anchor_margin)
+				w['iq-captcha-div'].style.top = (anchor_margin - parseInt(w['iq-captcha-div'].style.height)) + "px";
 			// if it moves above the beginning of page
 			if(w['iq-captcha-div'].getBoundingClientRect().top + window.scrollY < 12) 
-				w['iq-captcha-div'].style.top = (parseInt(w['iq-captcha-div'].style.top) - (w['iq-captcha-div'].getBoundingClientRect().top + window.scrollY) + 12) + "px";
-
+				w['iq-captcha-div'].style.top = (parseInt(w['iq-captcha-div'].style.top) 
+								- (w['iq-captcha-div'].getBoundingClientRect().top + window.scrollY) + 12) + "px";
 			// just for padding to the bottom of page
 			w['iq-captcha-div-padding'].style.left = parseInt(w['iq-captcha-div'].style.left) + "px";
 			w['iq-captcha-div-padding'].style.top = parseInt(w['iq-captcha-div'].style.top) + "px";
 			w['iq-captcha-div-padding'].style.width = 1 + "px";
 			w['iq-captcha-div-padding'].style.height = (parseInt(w['iq-captcha-div'].style.height) + 16) + "px";
+
+			oldheight = parseInt(button_rect.bottom - captcha_rect.top);
+			oldviewportheight = new_viewport_height;
 		}
 	}, 50);
 }

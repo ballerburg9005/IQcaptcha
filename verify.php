@@ -181,6 +181,8 @@ if($toomanyips)
 /* END anti brute force */
 
 echo json_encode($response);
+
+
 function generate_polynomial($x, $thingy)
 {
 	$coefficients = [];
