@@ -255,7 +255,7 @@ function overlay_random_numbers($imagick, $answer)
 		do $rc = [rand(0,255), rand(0,255), rand(0,255)]; while(($rc[1] > 200 && $rc[2] > 200) || ($rc[0] < 100 && $rc[1] > 150 && $rc[2] > 150));
 		$draw->setFillColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
 		$draw->setStrokeColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
-		$draw->annotation(32+100*($i%4), 232+$fontsize+intval($i/4)*80, strval($rand));
+		$draw->annotation(32+100*($i%4)+rand(0,16)-8, 232+$fontsize+intval($i/4)*80, strval($rand));
 	}
 
 	$imagick->drawImage($draw);
