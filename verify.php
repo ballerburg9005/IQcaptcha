@@ -82,7 +82,7 @@ if(($_POST['frontend']??"") == "true")
 				$modified_answer = generate_polynomial($s[$pick]['a'], 'pattern');
 
 				$imagick_ravens = generate_ravens_imagick($s, $pick);
-				$modified_answer['answer'] = overlay_random_numbers($imagick_ravens, $modified_answer['answer']);
+				$modified_answer['answer'] = overlay_random_numbers_imagick($imagick_ravens, $modified_answer['answer']);
 				$imagick_ravens->resizeImage(370-rand(5,25), (400/$imagick_ravens->getImageWidth())*$imagick_ravens->getImageHeight()-rand(5,25), Imagick::FILTER_LANCZOS,1);
 
 				$imagick_text = generate_text_imagick($modified_answer['text'], 20);
@@ -239,7 +239,7 @@ function generate_text_imagick($text, $fontsize)
 }
 
 
-function overlay_random_numbers($imagick, $answer)
+function overlay_random_numbers_imagick($imagick, $answer)
 {
 	$return = -1;
 	$fontsize = 22;
@@ -255,7 +255,7 @@ function overlay_random_numbers($imagick, $answer)
 		do $rc = [rand(0,255), rand(0,255), rand(0,255)]; while(($rc[1] > 200 && $rc[2] > 200) || ($rc[0] < 100 && $rc[1] > 150 && $rc[2] > 150));
 		$draw->setFillColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
 		$draw->setStrokeColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
-		$draw->annotation(32+100*($i%4)+rand(0,16)-8, 232+$fontsize+intval($i/4)*80, strval($rand));
+		$draw->annotation(32+100*($i%4)+rand(0,32)-16, 232+$fontsize+intval($i/4)*80, strval($rand));
 	}
 
 	$imagick->drawImage($draw);
