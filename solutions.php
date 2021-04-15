@@ -1,11 +1,11 @@
 <?php
 
 $s = [
-0 => [ 'a' => "5", 'u' => './img/raven0.jpg'],
-1 => [ 'a' => "3", 'u' => './img/raven1.jpg'],
-2 => [ 'a' => "4", 'u' => './img/raven2.jpg'],
+0 => [ 'a' => "5", 'u' => './img/raven0.gif'],
+1 => [ 'a' => "3", 'u' => './img/raven1.gif'],
+2 => [ 'a' => "4", 'u' => './img/raven2.gif'],
 3 => [ 'a' => "1", 'u' => './img/raven3.gif'],
-4 => [ 'a' => "6", 'u' => './img/raven4.jpg'],
+4 => [ 'a' => "6", 'u' => './img/raven4.gif'],
 5 => [ 'a' => "5", 'u' => './img/raven5.gif'],
 6 => [ 'a' => "5", 'u' => './img/raven6.gif'],
 7 => [ 'a' => "4", 'u' => './img/raven7.gif'],
