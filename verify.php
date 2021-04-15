@@ -22,6 +22,13 @@ if(!$PRODUCTION) error_reporting(E_ALL);
 
 require("solutions.php");
 
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: *');
+header('Content-Type: application/json');
+
+ini_set("session.use_cookies", 0);
+
+
 if(file_exists(__DIR__ . '/vendor/autoload.php'))
 	require_once(__DIR__ . '/vendor/autoload.php');
 else
@@ -32,12 +39,6 @@ else
 }
 
 $response = ['error' => "Unknown Error.", 'aborted' => false ];
-
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: *');
-header('Content-Type: application/json');
-
-ini_set("session.use_cookies", 0);
 
 $gcompat = ($_POST['response']??$_GET['response']??"") === "" ? "session" : "response";
 session_id(substr(preg_replace('/[[:^print:]]/', '', $_POST[$gcompat]??$_GET[$gcompat]??""), 0, 1024));
