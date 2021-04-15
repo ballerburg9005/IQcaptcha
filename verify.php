@@ -79,10 +79,11 @@ if(($_POST['frontend']??"") == "true")
 			else
 			{
 				do $pick = rand(0,count($s)-1); while(!isset($s[$pick]));
-				$modified_answer = generate_polynomial($s[$pick]['a'], 'pattern');
 
 				$imagick_ravens = generate_ravens_imagick($s, $pick);
-				$modified_answer['answer'] = overlay_random_numbers_imagick($imagick_ravens, $modified_answer['answer']);
+				$randomized_answer = overlay_random_numbers_imagick($imagick_ravens, $s[$pick]['a']);
+				$modified_answer = generate_polynomial($randomized_answer, 'pattern');
+
 				$imagick_ravens->resizeImage(370-rand(5,25), (400/$imagick_ravens->getImageWidth())*$imagick_ravens->getImageHeight()-rand(5,25), Imagick::FILTER_LANCZOS,1);
 
 				$imagick_text = generate_text_imagick($modified_answer['text'], 20);
