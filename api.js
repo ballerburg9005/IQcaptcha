@@ -49,7 +49,7 @@ iq_captcha_create_classes([
 ['div.iq-captcha-element, .iq-captcha-element :before, .iq-captcha-element :after' , `
 box-sizing: unset;
 `],
-['div.iq-captcha-element *' , `margin: initial; padding: initial;`],
+['div.iq-captcha-element *' , `margin: initial; padding: initial; letter-spacing: initial`],
 ['div.iq-captcha-element' , `
 	color: black;
 	width: 256px;
