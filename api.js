@@ -67,6 +67,17 @@ box-sizing: unset;
 ['div.iq-rdiv', `width: 84px; display: table-cell; height: 100%; vertical-align: middle; text-align: center`],
 ['div.iq-center-table' , `display: table;`],
 ['div.iq-center-td' , `display: table-cell; height: 100%; vertical-align: middle`],
+['div.iq-reloadbox-div' , `
+	display: inline-block;
+	width: 36px;
+	height: 36px;
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 38px;
+	font-size: 32pt;
+	color: #888;
+`],
 ['div.iq-checkbox-div' , `
 	width: 24px;
 	height: 24px;
@@ -151,7 +162,8 @@ box-sizing: unset;
 	font-size: 14pt;
 	background-color: #093;
 	padding: 0 12px;
-	min-width: 100px;
+	min-width: 96px;
+	width: 96px;
 	border: 0;
 	border-radius: 3px;
 	color: white !important;
@@ -160,12 +172,26 @@ box-sizing: unset;
 	font-family: helvetica,arial,sans-serif;
 `],	
 ['img.iq-captcha-img' , `padding-top: 6px;`],
+['label.iq-captcha-answer-label' , `
+//  width: 0;
+  z-index: 2;
+  float: right;
+  position: absolute;
+  width: 198px;
+  padding-right: 3px;
+  padding-top: 4px;
+  text-align: right;
+  pointer-events: none;
+  color: #999;
+`],
+['div.iq-captcha-answer-div' , `display: inline-block;`],
 ['input.iq-captcha-answer' , `
 	height: 48px;
 	font-size: 14px;
 	background-color: #efe;
-	padding: 0 12px;
-	min-width: 100px;
+	min-width: 180px;
+	width: 196px;
+	padding-left: 4px;
 	border: 1px solid #bbb;
 	border-radius: 3px;
 	color: black;
@@ -318,7 +344,7 @@ function iq_captcha_verify(data)
 	}
 
 	if(data.action === "validate")
-		data['answer'] = document.querySelector(".iq-captcha-answer").value;
+		data['answer'] = eval(document.querySelector(".iq-captcha-answer").value);
 
 	const checkbox = document.querySelector(".iq-checkbox-div");
 
@@ -462,6 +488,7 @@ function iq_captcha_prevent_submit()
 	return false;
 }
 
+
 function iq_captcha_verify_show_error(error)
 {
 	let w = {};
@@ -476,6 +503,31 @@ function iq_captcha_verify_show_error(error)
 	`);
 	w['iq-captcha-div'].className = 'iq-captcha-div iq-captcha-div-error';
 }
+
+
+function iq_captcha_eval_inputbox(box)
+{
+	let myeval = "";
+	let mystring = document.querySelector(".iq-captcha-answer").value;
+	for (var i = mystring.length-1; i >= 0; i--) 
+		if(isNaN(+mystring[i])) mystring = mystring.slice(0, mystring.length-1);
+		else break;
+	
+	try { myeval = eval(mystring); } 
+	catch(e) { }
+
+	if(isNaN(+myeval)) myeval = "";
+	document.querySelector(".iq-captcha-answer-label").innerHTML = "="+myeval;
+	
+}
+
+
+function iq_captcha_reload_challenge()
+{
+	document.querySelector(".iq-checkbox-relative-anchor").innerHTML = "";
+	iq_captcha_verify({action: 'create_session'});
+}
+
 
 function iq_captcha_verify_populate(re)
 {
@@ -501,9 +553,15 @@ function iq_captcha_verify_populate(re)
 	</div>
 	<div class="iq-captcha-footer"> 
 		<div class="iq-captcha-footer-left">
-		<input type="text" class="iq-captcha-answer" id="iq-captcha-answer">
+			<div class="iq-captcha-answer-div">
+				<label for="iq-captcha-answer" class="iq-captcha-answer-label">=0</label>
+				<input type="text" class="iq-captcha-answer" id="iq-captcha-answer" onkeyup="iq_captcha_eval_inputbox(this);">
+			</div>
 		</div>
 		<div class="iq-captcha-footer-right"> 
+			<div class="iq-reloadbox-div" onclick="iq_captcha_reload_challenge();">
+				<div style="position: relative"><div style="position: absolute; top: 0px; left: 0px; pointer-events: none;">&#8635;</div></div>
+			</div>
 			<button type="button" class="iq-captcha-verify-button" id="iq-captcha-verify-button" onclick="iq_captcha_verify({action: 'validate' }); return false;">Verify</button>
 		</div>
 		

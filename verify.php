@@ -84,7 +84,6 @@ if(($_POST['frontend']??"") == "true")
 				$randomized_answer = overlay_random_numbers_imagick($imagick_ravens, $s[$pick]['a']);
 				$modified_answer = generate_polynomial($randomized_answer, 'pattern');
 
-				$imagick_ravens->resizeImage(370-rand(5,25), (400/$imagick_ravens->getImageWidth())*$imagick_ravens->getImageHeight()-rand(5,25), Imagick::FILTER_LANCZOS,1);
 
 				$imagick_text = generate_text_imagick($modified_answer['text'], 20);
 
@@ -114,7 +113,10 @@ if(($_POST['frontend']??"") == "true")
 					'success' => false,
 					'sitekey' =>  $_POST['data-sitekey']??"",
 					'hostname' =>  $_POST['hostname']??"",
-					'stock_parameters' => isset($_POST['data-wrongmax'], $_POST['data-wrongtimeout'], $_POST['data-maxtime']) ? false : true,
+					'stock_parameters' =>     (isset($_POST['data-wrongmax']) 
+								|| isset($_POST['data-wrongtimeout']) 
+								|| isset($_POST['data-maxtime']) 
+								  ) ? false : true,
 					'wrongmax' => max(3, min(10, $_POST['data-wrongmax']??0)),
 					'wrongtimeout' => max(3*60, min(1000*60, $_POST['data-wrongtimeout']??0)),
 					'challenge_ts' => $IP_TIME, // TODO make google alike timestamp here + docs
@@ -165,7 +167,7 @@ else	// backend
 
 	if(isset($VAL))
 	{
-		if(isset($_SESSION['v'])) $response = $_SESSION['v'];
+		if(isset($_SESSION['v'])) $response = $_SESSION['v']; // + $_SESSION['w'];
 	
 		if((isset($VAL['secret']) && $VAL['secret'] !== $_SESSION['v']['sitekey'])
 		|| (isset($VAL['sitekey']) && $VAL['sitekey'] !== $_SESSION['v']['sitekey']))
@@ -253,10 +255,10 @@ function overlay_random_numbers_imagick($imagick, $answer)
 	{
 		$rand = rand(1,100);
 		if($i+1 == $answer) $return = $rand;
-		do $rc = [rand(0,255), rand(0,255), rand(0,255)]; while(($rc[1] > 200 && $rc[2] > 200) || ($rc[0] < 100 && $rc[1] > 150 && $rc[2] > 150));
-		$draw->setFillColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
-		$draw->setStrokeColor("rgb(".$rc[0].",".$rc[1].",".$rc[2].")");
-		$draw->annotation(32+100*($i%4)+rand(0,32)-16, 232+$fontsize+intval($i/4)*80, strval($rand));
+		do $rc = [rand(50,255), rand(100,255), rand(50,255)]; while(($rc[1] > 120 && $rc[2] > 120) || ($rc[0] < 100 && $rc[1] > 150 && $rc[2] > 150));
+		$draw->setFillColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
+		$draw->setStrokeColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
+		$draw->annotation(28+90*($i%4)+(rand(0,28)-14), 208+$fontsize+intval($i/4)*74, strval($rand));
 	}
 
 	$imagick->drawImage($draw);
@@ -270,6 +272,8 @@ function generate_ravens_imagick($s, $pick)
 	$imagick = new \Imagick(realpath($s[$pick]['u']));
 	$imagick->setImageFormat("jpg");
 
+	if($imagick->getImageWidth() != 360 || $imagick->getImageHeight() != 360)
+		$imagick->resizeImage(360, (360/$imagick->getImageWidth())*$imagick->getImageHeight(), Imagick::FILTER_LANCZOS,1);
 
 	return($imagick);
 }
