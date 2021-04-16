@@ -317,7 +317,7 @@ function iq_captcha_verify(data)
 {
 	if(data.action === "validate")
 		try { data['answer'] = eval(document.querySelector(".iq-captcha-answer").value); }
-		catch(e) { return false; }
+		catch(e) { document.querySelector(".iq-captcha-above-footer").innerHTML = "Input field does not compute."; return false; }
 
 	const verify_button = document.querySelector(".iq-captcha-verify-button");
 	if(verify_button) 
