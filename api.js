@@ -555,7 +555,7 @@ function iq_captcha_verify_populate(re)
 		<div class="iq-captcha-footer-left">
 			<div class="iq-captcha-answer-div">
 				<label for="iq-captcha-answer" class="iq-captcha-answer-label">=0</label>
-				<input type="text" class="iq-captcha-answer" id="iq-captcha-answer" onkeyup="iq_captcha_eval_inputbox(this);">
+				<input type="text" class="iq-captcha-answer" id="iq-captcha-answer" onkeyup="iq_captcha_eval_inputbox(this);" autocomplete="off">
 			</div>
 		</div>
 		<div class="iq-captcha-footer-right"> 
