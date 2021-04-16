@@ -256,7 +256,7 @@ function overlay_random_numbers_imagick($imagick, $answer)
 	{
 		$rand[] = rand(1,100);
 		while(array_search($rand[$i], array_slice($rand, 0, -1)) !== false) $rand[$i] = rand(1,100);
-		$m = 150;
+		$m = 80;
 		do $rc = [rand(50,255), rand(50,255), rand(50,255)]; while(($rc[0] > $m && $rc[1] > $m) || ($rc[1] > $m && $rc[2] > $m) || ($rc[0] > $m && $rc[2] > $m));
 		$draw->setFillColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
 		$draw->setStrokeColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
