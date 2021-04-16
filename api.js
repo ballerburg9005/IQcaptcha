@@ -548,7 +548,7 @@ function iq_captcha_verify_populate(re)
 	<img src="data:image/jpeg;charset=utf-8;base64, ${re.image}" class="iq-captcha-img" alt="a captcha image showing patterns or values to solve">
 	<img src="data:image/jpeg;charset=utf-8;base64, ${re.text}" class="iq-captcha-text" alt="a math problem formulated in text">
 	</center>
-	<div class="iq-captcha-above-footer"> &nbsp; 
+	<div class="iq-captcha-above-footer"><span style="color: #666">Hint: use input field as calculator.</span> 
 	</div>
 	<div class="iq-captcha-footer"> 
 		<div class="iq-captcha-footer-left">
