@@ -314,6 +314,10 @@ function iq_captcha_verify_and_preventDefault(event)
 
 function iq_captcha_verify(data)
 {
+	if(data.action === "validate")
+		try { data['answer'] = eval(document.querySelector(".iq-captcha-answer").value); }
+		catch(e) { return false; }
+
 	const verify_button = document.querySelector(".iq-captcha-verify-button");
 	if(verify_button) 
 		if(verify_button.disabled) return false;
@@ -340,10 +344,6 @@ function iq_captcha_verify(data)
 		if(!data[x]) data[x] = document.querySelector(".iq-captcha-element").parentElement.getAttribute(x); 		// h4xx!
 		if(!data[x]) delete data[x];
 	}
-
-	if(data.action === "validate")
-		try { data['answer'] = eval(document.querySelector(".iq-captcha-answer").value); }
-		catch(e) { return false; }
 
 	const checkbox = document.querySelector(".iq-checkbox-div");
 
