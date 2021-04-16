@@ -186,7 +186,7 @@ session_write_close();
 session_id("da4a6221426c1e5ee5a51f90a46ffd5b");
 session_start();
 if(!isset($_SESSION[$_SERVER['REMOTE_ADDR']])) $_SESSION[$_SERVER['REMOTE_ADDR']] = [];
-if(($IP_ADDR??"") == "add") $_SESSION[$_SERVER['REMOTE_ADDR']] += [$IP_TIME];
+if(($IP_ADDR??"") == "add") $_SESSION[$_SERVER['REMOTE_ADDR']][] = $IP_TIME;
 if(($IP_ADDR??"") == "remove") unset($_SESSION[$_SERVER['REMOTE_ADDR']][array_search($IP_TIME, $_SESSION[$_SERVER['REMOTE_ADDR']])]);
 foreach($_SESSION[$_SERVER['REMOTE_ADDR']] as $k => $v) if($v+$IP_MAXTRANSIENCE > time()) unset($_SESSION[$_SERVER['REMOTE_ADDR']][$k]);
 $toomanyips = count($_SESSION[$_SERVER['REMOTE_ADDR']]) > $IP_MAXUSERS ? true : false;
@@ -245,7 +245,7 @@ function generate_text_imagick($text, $fontsize)
 
 function overlay_random_numbers_imagick($imagick, $answer)
 {
-	$return = -1;
+	$rand = [];
 	$fontsize = 22;
 	$draw = new \ImagickDraw();
 	$draw->setStrokeWidth(2);
@@ -254,17 +254,18 @@ function overlay_random_numbers_imagick($imagick, $answer)
 
 	for($i=0;$i<8;$i++)
 	{
-		$rand = rand(1,100);
-		if($i+1 == $answer) $return = $rand; $m = 150;
+		$rand[] = rand(1,100);
+		while(array_search($rand[$i], array_slice($rand, 0, -1)) !== false) $rand[$i] = rand(1,100);
+		$m = 150;
 		do $rc = [rand(50,255), rand(50,255), rand(50,255)]; while(($rc[0] > $m && $rc[1] > $m) || ($rc[1] > $m && $rc[2] > $m) || ($rc[0] > $m && $rc[2] > $m));
 		$draw->setFillColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
 		$draw->setStrokeColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
-		$draw->annotation(28+90*($i%4)+(rand(0,28)-14), 208+$fontsize+intval($i/4)*74, strval($rand));
+		$draw->annotation(28+90*($i%4)+(rand(0,28)-14), 208+$fontsize+intval($i/4)*74, strval($rand[$i]));
 	}
 
 	$imagick->drawImage($draw);
 
-	return($return);
+	return($rand[$answer-1]);
 }
 
 

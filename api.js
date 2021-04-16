@@ -342,7 +342,8 @@ function iq_captcha_verify(data)
 	}
 
 	if(data.action === "validate")
-		data['answer'] = eval(document.querySelector(".iq-captcha-answer").value);
+		try { data['answer'] = eval(document.querySelector(".iq-captcha-answer").value); }
+		catch(e) { return false; }
 
 	const checkbox = document.querySelector(".iq-checkbox-div");
 
