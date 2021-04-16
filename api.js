@@ -170,6 +170,7 @@ box-sizing: revert;
 	font-weight: bold;
 	text-transform: initial;
 	font-family: helvetica,arial,sans-serif;
+	line-height: revert;
 `],	
 ['img.iq-captcha-img' , `padding-top: 6px;`],
 ['label.iq-captcha-answer-label' , `
