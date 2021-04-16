@@ -153,7 +153,7 @@ box-sizing: revert;
 	z-index: 999991;
 `],
 
-['div.iq-captcha-above-footer' , `padding-left: 8px; padding-top: 4px; color: #f55; font-size: 10pt`],
+['div.iq-captcha-above-footer' , `padding-left: 8px; padding-top: 4px; color: #f55; font-size: 10pt; text-align: left`],
 ['div.iq-captcha-footer' , `padding: 8px;`],
 ['div.iq-captcha-footer-left' , `float: left;`],
 ['div.iq-captcha-footer-right' , `float: right;`],
