@@ -173,11 +173,10 @@ box-sizing: revert;
 `],	
 ['img.iq-captcha-img' , `padding-top: 6px;`],
 ['label.iq-captcha-answer-label' , `
-//  width: 0;
   z-index: 2;
   float: right;
   position: absolute;
-  width: 198px;
+  width: 183px;		
   padding-right: 3px;
   padding-top: 4px;
   text-align: right;
@@ -189,9 +188,8 @@ box-sizing: revert;
 	height: 48px;
 	font-size: 14px;
 	background-color: #efe;
-	min-width: 180px;
-	width: 196px;
-	padding-left: 4px;
+	width: 180px;
+	padding-left: 6px;
 	border: 1px solid #bbb;
 	border-radius: 3px;
 	color: black;
