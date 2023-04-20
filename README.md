@@ -164,6 +164,8 @@ PhpBB and Wordpress plugins
 * [Wordpress Plugin](https://github.com/ballerburg9005/IQcaptcha-wordpress-plugin)
 * [PhpBB Extension](https://github.com/ballerburg9005/IQcaptcha-phpbb-extension)
 
+Please: 
+
 * Don't forget to run composer install in the IQcaptcha directory.
 * Public sitekey and secret/private API key fields must be identical.
 
