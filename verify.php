@@ -86,7 +86,7 @@ if(($_POST['frontend']??"") == "true")
 				$modified_answer = generate_polynomial($randomized_answer, 'pattern');
 
 
-				$imagick_text = generate_text_imagick($modified_answer['text'], 12);
+				$imagick_text = generate_text_imagick($modified_answer['text'], 20);
 
 				$imagick_ravens->borderImage("rgb(255,255,255)", 16,16);
 //				$imagick_ravens->waveImage(rand(4,8), rand(80,120));
@@ -234,7 +234,7 @@ function generate_text_imagick($text, $fontsize)
 	$draw->annotation(180, $fontsize, $text);
 
 	$imagick = new \Imagick();
-	$imagick->newImage(360, $fontsize*(substr_count($text, "\n")+1) + $fontsize*0.66, "rgb(255, 255, 255)");
+	$imagick->newImage(360, $fontsize*(substr_count($text, "\n")+1) + $fontsize*0.8, "rgb(255, 255, 255)");
 	$imagick->setImageFormat("jpg");
 
 	$imagick->drawImage($draw);
