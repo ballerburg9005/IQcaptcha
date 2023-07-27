@@ -86,7 +86,7 @@ if(($_POST['frontend']??"") == "true")
 				$modified_answer = generate_polynomial($randomized_answer, 'pattern');
 
 
-				$imagick_text = generate_text_imagick($modified_answer['text'], 17);
+				$imagick_text = generate_text_imagick($modified_answer['text'], 12);
 
 				$imagick_ravens->borderImage("rgb(255,255,255)", 16,16);
 //				$imagick_ravens->waveImage(rand(4,8), rand(80,120));
