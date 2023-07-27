@@ -234,7 +234,7 @@ function generate_text_imagick($text, $fontsize)
 	$draw->annotation(180, $fontsize, $text);
 
 	$imagick = new \Imagick();
-	$imagick->newImage(360, $fontsize*(substr_count($text, "\n")+1) + $fontsize*0.5, "rgb(255, 255, 255)");
+	$imagick->newImage(360, $fontsize*(substr_count($text, "\n")+1) + $fontsize*0.66, "rgb(255, 255, 255)");
 	$imagick->setImageFormat("jpg");
 
 	$imagick->drawImage($draw);
