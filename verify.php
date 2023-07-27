@@ -260,7 +260,7 @@ function overlay_random_numbers_imagick($imagick, $answer)
 		do $rc = [rand(50,255), rand(50,255), rand(50,255)]; while(($rc[0] > $m && $rc[1] > $m) || ($rc[1] > $m && $rc[2] > $m) || ($rc[0] > $m && $rc[2] > $m));
 		$draw->setFillColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
 		$draw->setStrokeColor("rgba(".$rc[0].",".$rc[1].",".$rc[2].", 255)");
-		$draw->annotation(28+90*($i%4)+(rand(0,28)-14), 204+$fontsize+intval($i/4)*74, strval($rand[$i]));
+		$draw->annotation(28+90*($i%4)+(rand(0,28)-14), 205+$fontsize+intval($i/4)*74, strval($rand[$i]));
 	}
 
 	$imagick->drawImage($draw);
